@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Store & Play Store - Payment Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main id="app">
+        <!-- Step 1: Credentials -->
+        <section id="step-1" class="step active">
+            <h1>App Deployment Portal</h1>
+            <p class="subtitle">We help you deploy your Apple and Android apps globally. <br><span
+                    style="font-size: 14px; display: block; margin-top: 10px; color: var(--accent-color);">Note: Only
+                    Mash the developer can deploy your app.</span></p>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="name@company.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Min 8 characters" required>
+            </div>
+
+            <button class="primary" onclick="nextStep(2)">Continue</button>
+        </section>
+
+        <!-- Step 2: Selection -->
+        <section id="step-2" class="step">
+            <h1>Choose Platform</h1>
+            <p class="subtitle">Select the app stores where you'd like to reach your global audience.</p>
+
+            <div class="options">
+                <div class="option-card" onclick="selectOption('android', 25)">
+                    <div class="option-info">
+                        <h3>Android (Play Store)</h3>
+                    </div>
+                    <div class="option-price">$25</div>
+                </div>
+
+                <div class="option-card" onclick="selectOption('ios', 99)">
+                    <div class="option-info">
+                        <h3>iOS (App Store)</h3>
+                    </div>
+                    <div class="option-price">$99</div>
+                </div>
+
+                <div class="option-card" onclick="selectOption('both', 124)">
+                    <div class="option-info">
+                        <h3>Both Platforms</h3>
+                    </div>
+                    <div class="option-price">$124</div>
+                </div>
+            </div>
+
+            <button id="selection-next" class="primary disabled" onclick="nextStep(3)" disabled>Continue</button>
+            <a class="back-link" onclick="nextStep(1)">Go Back</a>
+        </section>
+
+        <!-- Step 3: App Details -->
+        <section id="step-3" class="step">
+            <h1>App Details</h1>
+            <p class="subtitle">Tell us more about your application and developer account.</p>
+
+            <div class="form-group">
+                <label for="app-plan">App Plan / Installation Links</label>
+                <input type="text" id="app-plan" placeholder="Describe your app plan...">
+            </div>
+
+            <div class="form-group">
+                <label for="dev-name">Developer Name</label>
+                <input type="text" id="dev-name" placeholder="Enter developer name">
+            </div>
+
+            <button class="primary" onclick="validateStep3()">Continue</button>
+            <a class="back-link" onclick="nextStep(2)">Go Back</a>
+        </section>
+
+        <!-- Step 4: Region Check -->
+        <section id="step-4" class="step">
+            <h1>Payment Context</h1>
+            <p class="subtitle">Are you using a local bank for this payment in Kenya?</p>
+
+            <div class="options">
+                <div class="option-card" id="region-kenya" onclick="selectRegion(true)">
+                    <div class="option-info">
+                        <h3>Yes, I am in Kenya</h3>
+                    </div>
+                </div>
+
+                <div class="option-card" id="region-other" onclick="selectRegion(false)">
+                    <div class="option-info">
+                        <h3>No, I am elsewhere</h3>
+                    </div>
+                </div>
+            </div>
+
+            <button id="region-next" class="primary disabled" onclick="nextStep(5)" disabled>Continue</button>
+            <a class="back-link" onclick="nextStep(3)">Go Back</a>
+        </section>
+
+        <!-- Step 5: Summary -->
+        <section id="step-5" class="step">
+            <h1>Summary</h1>
+            <p class="subtitle">Review your total charges before checkout.</p>
+
+            <div class="summary-card">
+                <div class="summary-row">
+                    <span>Platform</span>
+                    <span id="summary-platform">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Developer</span>
+                    <span id="summary-dev">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Base Fee</span>
+                    <span id="summary-base">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (30%)</span>
+                    <span id="summary-tax">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>App Fee (10%)</span>
+                    <span id="summary-fee">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total Due</span>
+                    <span id="summary-total">$0.00</span>
+                </div>
+            </div>
+
+            <p id="payment-notice"
+                style="font-size: 13px; color: var(--secondary-text); text-align: center; margin-bottom: 20px;"></p>
+
+            <button id="pay-button" class="primary" onclick="payWithPaystack()">Pay Now</button>
+            <a class="back-link" onclick="nextStep(4)">Go Back</a>
+        </section>
+    </main>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
