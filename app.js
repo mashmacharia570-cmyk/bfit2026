@@ -127,7 +127,19 @@ function payWithPaystack() {
     const amountKES = Math.round(amountUSD * 130);
     const amountInCents = amountKES * 100; // Paystack expects minor units (cents/shillings * 100)
 
-    console.log('Initiating Paystack KES Transaction:', { amountInCents, email: state.email });
+    console.log('Initiating Paystack KES Transaction:', {
+        amountInCents,
+        email: state.email,
+        key: PAYSTACK_PUBLIC_KEY.substring(0, 10) + '...'
+    });
+
+    const timeoutId = setTimeout(() => {
+        console.error('Paystack took too long to load.');
+        alert('The payment window is taking too long to load. This usually happens if:\n1. Your domain is not whitelisted in Paystack Settings.\n2. Your Internet connection is unstable.\n\nPlease check the browser console (F12) for more details.');
+        payBtn.textContent = "Pay Now";
+        payBtn.classList.remove('disabled');
+        payBtn.disabled = false;
+    }, 15000);
 
     try {
         const paystack = new PaystackPop();
@@ -144,24 +156,32 @@ function payWithPaystack() {
                 ]
             },
             onSuccess: (transaction) => {
+                clearTimeout(timeoutId);
                 alert('Payment successful! Reference: ' + transaction.reference);
                 window.location.reload();
             },
             onCancel: () => {
+                clearTimeout(timeoutId);
                 alert('Transaction cancelled.');
                 payBtn.textContent = "Pay Now";
                 payBtn.classList.remove('disabled');
                 payBtn.disabled = false;
             },
             onError: (error) => {
+                clearTimeout(timeoutId);
                 console.error('Paystack Error:', error);
-                alert('Paystack Error: ' + (error.message || 'Check browser console for details (F12).'));
+                alert('Paystack Error: ' + (error.message || 'Check browser console (F12) for details.'));
                 payBtn.textContent = "Pay Now";
                 payBtn.classList.remove('disabled');
                 payBtn.disabled = false;
+            },
+            onLoad: () => {
+                console.log('Paystack loaded successfully');
+                clearTimeout(timeoutId);
             }
         });
     } catch (error) {
+        clearTimeout(timeoutId);
         console.error('Critical Paystack Error:', error);
         alert('Failed to initialize payment: ' + error.message);
         payBtn.textContent = "Pay Now";
