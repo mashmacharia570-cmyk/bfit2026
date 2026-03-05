@@ -113,6 +113,5 @@ function calculateFees() {
 function payWithPaystack() {
     const warningMessage = "STERN WARNING: Payment is STRICTLY allowed ONLY within the Jurisdiction of the Developer in Kenya, where this application was developed.\n\nAny attempt to process payment outside this jurisdiction is unauthorized. Please contact the developer directly for further instructions.";
     alert(warningMessage);
-    console.log('Payment bypassed. Returning home.');
-    window.location.reload();
+    console.log('Payment bypassed. Staying on summary page.');
 }
