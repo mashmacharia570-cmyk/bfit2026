@@ -127,8 +127,11 @@ function payWithPaystack() {
     const amountKES = Math.round(amountUSD * 130);
     const amountInCents = amountKES * 100; // Paystack expects minor units (cents/shillings * 100)
 
+    console.log('Initiating Paystack KES Transaction:', { amountInCents, email: state.email });
+
     try {
-        const handler = PaystackPop.setup({
+        const paystack = new PaystackPop();
+        paystack.newTransaction({
             key: PAYSTACK_PUBLIC_KEY,
             email: state.email,
             amount: amountInCents,
@@ -140,21 +143,26 @@ function payWithPaystack() {
                     { display_name: "Platform", variable_name: "platform", value: state.selectedPlatform }
                 ]
             },
-            callback: function (response) {
-                alert('Payment successful! Reference: ' + response.reference);
+            onSuccess: (transaction) => {
+                alert('Payment successful! Reference: ' + transaction.reference);
                 window.location.reload();
             },
-            onClose: function () {
+            onCancel: () => {
                 alert('Transaction cancelled.');
+                payBtn.textContent = "Pay Now";
+                payBtn.classList.remove('disabled');
+                payBtn.disabled = false;
+            },
+            onError: (error) => {
+                console.error('Paystack Error:', error);
+                alert('Paystack Error: ' + (error.message || 'Check browser console for details (F12).'));
                 payBtn.textContent = "Pay Now";
                 payBtn.classList.remove('disabled');
                 payBtn.disabled = false;
             }
         });
-
-        handler.openIframe();
     } catch (error) {
-        console.error('Paystack Error:', error);
+        console.error('Critical Paystack Error:', error);
         alert('Failed to initialize payment: ' + error.message);
         payBtn.textContent = "Pay Now";
         payBtn.classList.remove('disabled');
