@@ -123,17 +123,16 @@ function payWithPaystack() {
     const fee = state.basePrice * 0.1;
     const amountUSD = state.basePrice + tax + fee;
 
-    // Convert USD to cents (Paystack convention)
-    // Note: We'd normally handle currency conversion if paying in KES, 
-    // but for now we'll process the numeric value as the amount unit.
-    const amountInCents = Math.round(amountUSD * 100);
+    // Simple conversion: 1 USD = 130 KES
+    const amountKES = Math.round(amountUSD * 130);
+    const amountInCents = amountKES * 100; // Paystack expects minor units (cents/shillings * 100)
 
     try {
         const handler = PaystackPop.setup({
             key: PAYSTACK_PUBLIC_KEY,
             email: state.email,
             amount: amountInCents,
-            currency: 'USD',
+            currency: 'KES',
             metadata: {
                 custom_fields: [
                     { display_name: "App Plan", variable_name: "app_plan", value: state.appPlan },
