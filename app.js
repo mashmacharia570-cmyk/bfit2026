@@ -128,29 +128,37 @@ function payWithPaystack() {
     // but for now we'll process the numeric value as the amount unit.
     const amountInCents = Math.round(amountUSD * 100);
 
-    const handler = PaystackPop.setup({
-        key: PAYSTACK_PUBLIC_KEY,
-        email: state.email,
-        amount: amountInCents,
-        currency: 'USD',
-        metadata: {
-            custom_fields: [
-                { display_name: "App Plan", variable_name: "app_plan", value: state.appPlan },
-                { display_name: "Developer Name", variable_name: "dev_name", value: state.devName },
-                { display_name: "Platform", variable_name: "platform", value: state.selectedPlatform }
-            ]
-        },
-        callback: function (response) {
-            alert('Payment successful! Reference: ' + response.reference);
-            window.location.reload();
-        },
-        onClose: function () {
-            alert('Transaction cancelled.');
-            payBtn.textContent = "Pay Now";
-            payBtn.classList.remove('disabled');
-            payBtn.disabled = false;
-        }
-    });
+    try {
+        const handler = PaystackPop.setup({
+            key: PAYSTACK_PUBLIC_KEY,
+            email: state.email,
+            amount: amountInCents,
+            currency: 'USD',
+            metadata: {
+                custom_fields: [
+                    { display_name: "App Plan", variable_name: "app_plan", value: state.appPlan },
+                    { display_name: "Developer Name", variable_name: "dev_name", value: state.devName },
+                    { display_name: "Platform", variable_name: "platform", value: state.selectedPlatform }
+                ]
+            },
+            callback: function (response) {
+                alert('Payment successful! Reference: ' + response.reference);
+                window.location.reload();
+            },
+            onClose: function () {
+                alert('Transaction cancelled.');
+                payBtn.textContent = "Pay Now";
+                payBtn.classList.remove('disabled');
+                payBtn.disabled = false;
+            }
+        });
 
-    handler.openIframe();
+        handler.openIframe();
+    } catch (error) {
+        console.error('Paystack Error:', error);
+        alert('Failed to initialize payment: ' + error.message);
+        payBtn.textContent = "Pay Now";
+        payBtn.classList.remove('disabled');
+        payBtn.disabled = false;
+    }
 }
