@@ -69,31 +69,8 @@
                 <input type="text" id="dev-name" placeholder="Enter developer name">
             </div>
 
-            <button class="primary" onclick="validateStep3()">Continue</button>
+            <button class="primary" onclick="validateStep3(); nextStep(5);">Continue</button>
             <a class="back-link" onclick="nextStep(2)">Go Back</a>
-        </section>
-
-        <!-- Step 4: Region Check -->
-        <section id="step-4" class="step">
-            <h1>Payment Context</h1>
-            <p class="subtitle">Are you using a local bank for this payment in Kenya?</p>
-
-            <div class="options">
-                <div class="option-card" id="region-kenya" onclick="selectRegion(event, true)">
-                    <div class="option-info">
-                        <h3>Yes, I am in Kenya</h3>
-                    </div>
-                </div>
-
-                <div class="option-card" id="region-other" onclick="selectRegion(event, false)">
-                    <div class="option-info">
-                        <h3>No, I am elsewhere</h3>
-                    </div>
-                </div>
-            </div>
-
-            <button id="region-next" class="primary disabled" onclick="nextStep(5)" disabled>Continue</button>
-            <a class="back-link" onclick="nextStep(3)">Go Back</a>
         </section>
 
         <!-- Step 5: Summary -->

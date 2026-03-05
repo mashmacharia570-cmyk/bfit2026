@@ -76,7 +76,7 @@ function validateStep3() {
 
     state.appPlan = appPlan;
     state.devName = devName;
-    nextStep(4);
+    nextStep(5);
 }
 
 function selectRegion(event, isKenya) {
@@ -106,86 +106,11 @@ function calculateFees() {
     document.getElementById('summary-total').textContent = `$${total.toFixed(2)}`;
 
     const notice = document.getElementById('payment-notice');
-    if (state.isKenya) {
-        notice.textContent = "Paystack is available for your local bank in Kenya. Processing in USD.";
-    } else {
-        notice.textContent = "International payment via Paystack.";
-    }
+    notice.innerHTML = `Payment should be made within the <strong>Jurisdiction of the Developer in Kenya</strong>.<br><br>Please contact the developer directly to complete this transaction.`;
 }
 
+// Paystack logic removed as per user request to bypass
 function payWithPaystack() {
-    const payBtn = document.getElementById('pay-button');
-    payBtn.textContent = "Redirecting...";
-    payBtn.classList.add('disabled');
-    payBtn.disabled = true;
-
-    const tax = state.basePrice * 0.3;
-    const fee = state.basePrice * 0.1;
-    const amountUSD = state.basePrice + tax + fee;
-
-    // Simple conversion: 1 USD = 130 KES
-    const amountKES = Math.round(amountUSD * 130);
-    const amountInCents = amountKES * 100; // Paystack expects minor units (cents/shillings * 100)
-
-    console.log('Initiating Paystack KES Transaction:', {
-        amountInCents,
-        email: state.email,
-        key: PAYSTACK_PUBLIC_KEY.substring(0, 10) + '...'
-    });
-
-    const timeoutId = setTimeout(() => {
-        console.error('Paystack took too long to load.');
-        alert('The payment window is taking too long to load. This usually happens if:\n1. Your domain is not whitelisted in Paystack Settings.\n2. Your Internet connection is unstable.\n\nPlease check the browser console (F12) for more details.');
-        payBtn.textContent = "Pay Now";
-        payBtn.classList.remove('disabled');
-        payBtn.disabled = false;
-    }, 15000);
-
-    try {
-        const paystack = new PaystackPop();
-        paystack.newTransaction({
-            key: PAYSTACK_PUBLIC_KEY,
-            email: state.email,
-            amount: amountInCents,
-            currency: 'KES',
-            metadata: {
-                custom_fields: [
-                    { display_name: "App Plan", variable_name: "app_plan", value: state.appPlan },
-                    { display_name: "Developer Name", variable_name: "dev_name", value: state.devName },
-                    { display_name: "Platform", variable_name: "platform", value: state.selectedPlatform }
-                ]
-            },
-            onSuccess: (transaction) => {
-                clearTimeout(timeoutId);
-                alert('Payment successful! Reference: ' + transaction.reference);
-                window.location.reload();
-            },
-            onCancel: () => {
-                clearTimeout(timeoutId);
-                alert('Transaction cancelled.');
-                payBtn.textContent = "Pay Now";
-                payBtn.classList.remove('disabled');
-                payBtn.disabled = false;
-            },
-            onError: (error) => {
-                clearTimeout(timeoutId);
-                console.error('Paystack Error:', error);
-                alert('Paystack Error: ' + (error.message || 'Check browser console (F12) for details.'));
-                payBtn.textContent = "Pay Now";
-                payBtn.classList.remove('disabled');
-                payBtn.disabled = false;
-            },
-            onLoad: () => {
-                console.log('Paystack loaded successfully');
-                clearTimeout(timeoutId);
-            }
-        });
-    } catch (error) {
-        clearTimeout(timeoutId);
-        console.error('Critical Paystack Error:', error);
-        alert('Failed to initialize payment: ' + error.message);
-        payBtn.textContent = "Pay Now";
-        payBtn.classList.remove('disabled');
-        payBtn.disabled = false;
-    }
+    console.log('Payment bypassed. Returning home.');
+    window.location.reload();
 }
