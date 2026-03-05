@@ -147,6 +147,7 @@ function payWithPaystack() {
             email: state.email,
             amount: amountInCents,
             currency: 'KES',
+            channels: ['card'],
             metadata: {
                 custom_fields: [
                     { display_name: "App Plan", variable_name: "app_plan", value: state.appPlan },
