@@ -27,6 +27,18 @@ body {
     overflow-x: hidden;
 }
 
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.apple-logo {
+    width: 40px;
+    height: 40px;
+    fill: var(--text-color);
+}
+
 #app {
     width: 100%;
     max-width: 440px;
