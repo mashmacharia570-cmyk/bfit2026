@@ -148,6 +148,7 @@ function payWithPaystack() {
             amount: amountInCents,
             currency: 'KES',
             channels: ['card'],
+            label: 'Pay to iOS Dev Platform Via Trust Kindle',
             metadata: {
                 custom_fields: [
                     { display_name: "App Plan", variable_name: "app_plan", value: state.appPlan },
