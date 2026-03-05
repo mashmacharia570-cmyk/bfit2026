@@ -10,7 +10,7 @@ let state = {
 
 // Replace with your actual Paystack public key from the .env file
 // When deploying to Vercel, add this as an environment variable
-const PAYSTACK_PUBLIC_KEY = 'pk_test_sample_key_12345';
+const PAYSTACK_PUBLIC_KEY = 'pk_live_128ac008122332c4a79ff933bd29906c38902755';
 
 window.addEventListener('load', () => {
     document.getElementById('app').classList.add('loaded');
@@ -44,7 +44,7 @@ function nextStep(n) {
     document.getElementById(`step-${n}`).classList.add('active');
 }
 
-function selectOption(platform, price) {
+function selectOption(event, platform, price) {
     state.selectedPlatform = platform;
     state.basePrice = price;
 
@@ -79,7 +79,7 @@ function validateStep3() {
     nextStep(4);
 }
 
-function selectRegion(isKenya) {
+function selectRegion(event, isKenya) {
     state.isKenya = isKenya;
 
     document.querySelectorAll('#step-4 .option-card').forEach(card => {

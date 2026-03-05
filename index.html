@@ -10,24 +10,30 @@
 
 <body>
     <main id="app">
+        <div class="logo-container">
+            <svg class="apple-logo" viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.197-2.12-9.973-3.17-14.34-3.17-4.58 0-9.492 1.05-14.746 3.17-5.262 2.13-9.501 3.24-12.742 3.35-4.929.21-9.842-1.96-14.746-6.52-3.13-2.73-7.045-7.41-11.735-14.04-5.032-7.08-9.169-15.29-12.41-24.65-3.471-10.11-5.211-19.9-5.211-29.378 0-10.857 2.346-20.221 7.045-28.068 3.693-6.303 8.606-11.275 14.755-14.925s12.793-5.488 19.94-5.488c3.46 0 8.035.852 13.744 2.532 5.71 1.684 10.295 2.525 13.754 2.525 2.122 0 7.425-.939 15.896-2.83 8.473-1.88 15.346-2.448 20.625-1.7 13.746 2.003 24.154 7.402 31.238 16.186-11.414 6.814-17.114 16.373-17.114 28.699 0 9.176 3.113 16.943 9.356 23.344 3.378 3.46 7.496 6.13 12.353 8.01 1.222 1.646 2.378 3.46 3.467 5.432zM115.81 5.17c0 8.82-3.001 16.945-9.004 24.387-7.62 9.395-17.592 15.374-29.922 14.956-.31-9.709 3.298-18.969 10.802-27.422 4.103-4.639 9.07-8.392 14.903-11.25s11.733-4.424 17.702-4.699c.31 1.348.649 2.628.97 3.843.321 1.256.49 2.723.49 4.394z" />
+            </svg>
+        </div>
         <!-- Step 1: Credentials -->
         <section id="step-1" class="step active">
             <h1>App Deployment Portal</h1>
-            <p class="subtitle">We help you deploy your Apple and Android apps globally. <br><span
-                    style="font-size: 14px; display: block; margin-top: 10px; color: var(--accent-color);">Note: Only
-                    Mash the developer can deploy your app.</span></p>
+            <p class="subtitle">We help you deploy your Apple and Android apps globally.</p>
 
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="name@company.com" required>
-            </div>
+            <form onsubmit="event.preventDefault(); nextStep(2);">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="name@company.com" required>
+                </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Min 8 characters" required>
-            </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Min 8 characters" required>
+                </div>
 
-            <button class="primary" onclick="nextStep(2)">Continue</button>
+                <button type="submit" class="primary">Continue</button>
+            </form>
         </section>
 
         <!-- Step 2: Selection -->
@@ -36,21 +42,21 @@
             <p class="subtitle">Select the app stores where you'd like to reach your global audience.</p>
 
             <div class="options">
-                <div class="option-card" onclick="selectOption('android', 25)">
+                <div class="option-card" onclick="selectOption(event, 'android', 25)">
                     <div class="option-info">
                         <h3>Android (Play Store)</h3>
                     </div>
                     <div class="option-price">$25</div>
                 </div>
 
-                <div class="option-card" onclick="selectOption('ios', 99)">
+                <div class="option-card" onclick="selectOption(event, 'ios', 99)">
                     <div class="option-info">
                         <h3>iOS (App Store)</h3>
                     </div>
                     <div class="option-price">$99</div>
                 </div>
 
-                <div class="option-card" onclick="selectOption('both', 124)">
+                <div class="option-card" onclick="selectOption(event, 'both', 124)">
                     <div class="option-info">
                         <h3>Both Platforms</h3>
                     </div>
@@ -87,13 +93,13 @@
             <p class="subtitle">Are you using a local bank for this payment in Kenya?</p>
 
             <div class="options">
-                <div class="option-card" id="region-kenya" onclick="selectRegion(true)">
+                <div class="option-card" id="region-kenya" onclick="selectRegion(event, true)">
                     <div class="option-info">
                         <h3>Yes, I am in Kenya</h3>
                     </div>
                 </div>
 
-                <div class="option-card" id="region-other" onclick="selectRegion(false)">
+                <div class="option-card" id="region-other" onclick="selectRegion(event, false)">
                     <div class="option-info">
                         <h3>No, I am elsewhere</h3>
                     </div>
